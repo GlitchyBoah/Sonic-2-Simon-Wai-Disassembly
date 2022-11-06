@@ -893,7 +893,7 @@ sub_5FA:				; CODE XREF: DoPause+1Cp DoPause+34p ...
 		ld	c, (ix+7)
 		ld	a, (ix+1)
 		and	3
-		add	a, 0B4h	; '´'
+		add	a, 0B4h	; 'Â´'
 		rst	10h
 		push	bc
 		ld	a, (ix+8)
@@ -1368,7 +1368,7 @@ loc_8EF:				; CODE XREF: RAM:0972j
 
 loc_901:				; CODE XREF: RAM:08F8j
 		ld	(loc_95E+1), a
-		cp	0C0h ; 'À'
+		cp	0C0h ; 'Ã€'
 		jr	nz, loc_914
 		push	af
 		or	1Fh
@@ -1385,7 +1385,7 @@ loc_914:				; CODE XREF: RAM:0906j
 		and	0Fh
 
 loc_91A:				; CODE XREF: RAM:08FEj
-		add	a, 89h ; '‰'
+		add	a, 89h ; 'Â‰'
 		ld	(loc_91F+1), a
 
 loc_91F:				; DATA XREF: RAM:091Cw
@@ -1429,7 +1429,7 @@ loc_95E:				; DATA XREF: RAM:08F1w	RAM:loc_901w
 		ld	a, 0
 		or	a
 		jr	nz, loc_970
-		ld	(ix+7),	0C0h ; 'À'
+		ld	(ix+7),	0C0h ; 'Ã€'
 
 loc_967:				; DATA XREF: RAM:08E7w
 		ld	de, 0
@@ -1497,7 +1497,7 @@ loc_9BF:				; CODE XREF: sub_97D+19j
 		rra
 		rra
 		and	0Fh
-		add	a, 89h ; '‰'
+		add	a, 89h ; 'Â‰'
 		ld	(loc_9D1+2), a
 
 loc_9D1:				; DATA XREF: sub_97D+51w
@@ -1505,7 +1505,7 @@ loc_9D1:				; DATA XREF: sub_97D+51w
 		res	2, (ix+0)
 		set	1, (ix+0)
 		ld	a, (ix+1)
-		cp	0E0h ; 'à'
+		cp	0E0h ; 'Ã '
 		jr	nz, loc_9EA
 		ld	a, (ix+1Bh)
 		ld	(7F11h), a
@@ -2329,7 +2329,7 @@ loc_E59:				; CODE XREF: RAM:0E54j
 		push	ix
 		sub	2
 		add	a, a
-		add	a, 89h ; '‰'
+		add	a, 89h ; 'Â‰'
 		ld	(loc_E75+2), a
 
 loc_E75:				; DATA XREF: RAM:0E72w
@@ -2365,7 +2365,7 @@ loc_EB2:				; DATA XREF: RAM:0EAFw
 		res	2, (ix+0)
 		set	1, (ix+0)
 		ld	a, (ix+1)
-		cp	0E0h ; 'à'
+		cp	0E0h ; 'Ã '
 		jr	nz, loc_ECB
 		ld	a, (ix+1Bh)
 		ld	(7F11h), a
@@ -2490,10 +2490,10 @@ word_F75:	dw	zmake68kPtr(DAC_Sample01)
 		dw	zmake68kPtr(DAC_Sample06)
 		dw	DAC_Sample06_End-DAC_Sample06
 byte_F8D:	db  81h, 17h		; DATA XREF: RAM:loc_1F1r
-		db  82h,   1
+		db  82h,   6
 		db  83h, 17h
 		db  84h,   4
-		db  85h, 1Bh
+		db  85h, 20h
 		db  86h, 0Ah
 		db    0,   0
 		db  85h, 12h

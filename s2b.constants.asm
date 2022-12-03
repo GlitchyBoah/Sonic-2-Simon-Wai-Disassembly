@@ -9,6 +9,89 @@ Size_of_SEGA_sound =		$6174
 Size_of_Snd_driver_guess =	$DF3 ; approximate post-compressed size of the Z80 sound driver
 
 ; ---------------------------------------------------------------------------
+; Constants that can be used instead of hard-coded IDs for various things.
+; The "id" function allows to remove elements from an array/table without having
+; to change the IDs everywhere in the code.
+
+cur_zone_id := 0 ; the zone ID currently being declared
+cur_zone_str := "0" ; string representation of the above
+
+; macro to declare a zone ID
+; this macro also declares constants of the form zone_id_X, where X is the ID of the zone in stock Sonic 2
+; in order to allow level offset tables to be made dynamic
+zoneID macro zoneID,{INTLABEL}
+__LABEL__ = zoneID
+zone_id_{cur_zone_str} = zoneID
+cur_zone_id := cur_zone_id+1
+cur_zone_str := "\{cur_zone_id}"
+    endm
+
+; Zone IDs. These MUST be declared in the order in which their IDs are in-game, otherwise zone offset tables will screw up
+green_hill_zone zoneID		$00
+ocean_wind_zone zoneID		$01	; UNUSED
+wood_zone zoneID		$02
+sand_shower_zone zoneID		$03	; UNUSED
+metropolis_zone zoneID		$04
+metropolis_zone_2 zoneID	$05
+blue_lake_zone zoneID		$06	; UNUSED
+hill_top_zone zoneID		$07
+hidden_palace_zone zoneID	$08
+rock_world_zone zoneID		$09	; UNUSED
+oil_ocean_zone zoneID		$0A
+dust_hill_zone zoneID		$0B
+casino_night_zone zoneID	$0C
+chemical_plant_zone zoneID	$0D
+genocide_city_zone zoneID	$0E	; EMPTY
+neo_green_hill_zone zoneID	$0F
+death_egg_zone zoneID		$10	; EMPTY, NOT DEFINED IN CERTAIN TABLES
+
+; NOTE: If you want to shift IDs around, set useFullWaterTables to 1 in the assembly options
+
+; set the number of zones
+no_of_zones = cur_zone_id
+
+; Zone and act IDs
+green_hill_zone_act_1 =		(green_hill_zone<<8)|$00
+green_hill_zone_act_2 =		(green_hill_zone<<8)|$01
+ocean_wind_zone_act_1 =		(ocean_wind_zone<<8)|$00
+ocean_wind_zone_act_2 =		(ocean_wind_zone<<8)|$01
+wood_zone_act_1 =		(wood_zone<<8)|$00
+wood_zone_act_2 =		(wood_zone<<8)|$01
+sand_shower_zone_act_1 =	(sand_shower_zone<<8)|$00
+sand_shower_zone_act_2 =	(sand_shower_zone<<8)|$01
+metropolis_zone_act_1 =		(metropolis_zone<<8)|$00
+metropolis_zone_act_2 =		(metropolis_zone<<8)|$01
+metropolis_zone_act_3 =		(metropolis_zone_2<<8)|$00
+metropolis_zone_act_4 =		(metropolis_zone_2<<8)|$01
+blue_lake_zone_act_1 =		(blue_lake_zone<<8)|$00
+blue_lake_zone_act_2 =		(blue_lake_zone<<8)|$01
+hill_top_zone_act_1 =		(hill_top_zone<<8)|$00
+hill_top_zone_act_2 =		(hill_top_zone<<8)|$01
+hidden_palace_zone_act_1 =	(hidden_palace_zone<<8)|$00
+hidden_palace_zone_act_2 =	(hidden_palace_zone<<8)|$01
+rock_world_zone_act_1 =		(rock_world_zone<<8)|$00
+rock_world_zone_act_2 =		(rock_world_zone<<8)|$01
+oil_ocean_zone_act_1 =		(oil_ocean_zone<<8)|$00
+oil_ocean_zone_act_2 =		(oil_ocean_zone<<8)|$01
+dust_hill_zone_act_1 =		(dust_hill_zone<<8)|$00
+dust_hill_zone_act_2 =		(dust_hill_zone<<8)|$01
+casino_night_zone_act_1 =	(casino_night_zone<<8)|$00
+casino_night_zone_act_2 =	(casino_night_zone<<8)|$01
+chemical_plant_zone_act_1 =	(chemical_plant_zone<<8)|$00
+chemical_plant_zone_act_2 =	(chemical_plant_zone<<8)|$01
+genocide_city_zone_act_1 =	(genocide_city_zone<<8)|$00
+genocide_city_zone_act_2 =	(genocide_city_zone<<8)|$01
+neo_green_hill_zone_act_1 =	(neo_green_hill_zone<<8)|$00
+neo_green_hill_zone_act_2 =	(neo_green_hill_zone<<8)|$01
+death_egg_zone_act_1 =		(death_egg_zone<<8)|$00
+death_egg_zone_act_2 =		(death_egg_zone<<8)|$01
+
+; Non-existant/Sonic 1 IDs called
+labyrinth_zone_act_4 =		(ocean_wind_zone<<8)|$03	; leftover from Sonic 1
+scrap_brain_zone_act_2 =	(metropolis_zone_2<<8)|$01	; leftover from Sonic 1
+metropolis_zone_act_6 =		(metropolis_zone_2<<8)|$03	; ??? ; S1 Special Stage code calls this...
+
+; ---------------------------------------------------------------------------
 ; some variables and functions to help define those constants (redefined before a new set of IDs)
 offset :=	0		; this is the start of the pointer table
 ptrsize :=	1		; this is the size of a pointer (should be 1 if the ID is a multiple of the actual size)
@@ -35,6 +118,22 @@ VintID_Fade =		id(Vint_Fade_ptr)
 VintID_PCM =		id(Vint_PCM_ptr)
 VintID_SSResults =	id(Vint_SSResults_ptr)
 VintID_TitleCardDup =	id(Vint_TitleCardDup_ptr)
+
+; Game modes
+offset :=	GameModesArray
+ptrsize :=	1
+idstart :=	0
+
+GameModeID_SegaScreen =		id(GameMode_SegaScreen)
+GameModeID_TitleScreen =	id(GameMode_TitleScreen)
+GameModeID_Demo =		id(GameMode_Demo)
+GameModeID_Level =		id(GameMode_Level)
+GameModeID_SpecialStage =	id(GameMode_SpecialStage)
+GameModeFlag_TitleCard =	7 ; flag bit
+GameModeID_TitleCard =		1<<GameModeFlag_TitleCard ; flag mask
+
+S1GameModeID_ContinueScreen =	$14
+S1GameModeID_Credits =		$1C
 
 ; palette IDs
 offset :=	PalPointers
@@ -69,6 +168,14 @@ PalID_SpecStg =		id(PalPtr_SpecStg)
 
 S1PalID_SpecStg =	PalID_CPZ_U	; leftover from Sonic 1 Special Stage
 PalID_CNZ2 =		PalID_BLZ	; loaded in CNZ2; identical to CNZ1 palette
+
+; PLC IDs
+offset :=	ArtLoadCues
+ptrsize :=	2
+idstart :=	0
+
+PLCID_Std1 =		id(PLCptr_Std1)
+PLCID_Std2 =		id(PLCptr_Std2)
 
 ; Music IDs
 offset :=	zMasterPlaylist
@@ -142,10 +249,14 @@ Block_Table_End:
 
 TempArray_LayerDef:		ds.b	$200	; used by some layer deformation routines
 Decomp_Buffer:			ds.b	$200
+Decomp_Buffer_End:
 Sprite_Table_Input:		ds.b	$400	; in custom format before being converted and stored in Sprite_Table/Sprite_Table_2
 Sprite_Table_Input_End:
 
+; haven't gotten to documenting this yet, but this is here for clearRAM
+Object_RAM:
 				ds.b	$2000 ; RESERVED FOR OBJECT RAM, DO NOT REMOVE!!!
+Object_RAM_End:
 
 Primary_Collision:		ds.b	$600
 Secondary_Collision:		ds.b	$600
@@ -542,7 +653,17 @@ Underwater_palette_line2:	ds.b palette_line_size
 Underwater_palette_line3:	ds.b palette_line_size
 Underwater_palette_line4:	ds.b palette_line_size
 
-				ds.b	$100	; RESERVED FOR OTHER PALETTES! DO NOT REMOVE!!
+Normal_palette:			ds.b	palette_line_size	; main palette for non-underwater parts of the screen
+Normal_palette_line2:		ds.b	palette_line_size
+Normal_palette_line3:		ds.b	palette_line_size
+Normal_palette_line4:		ds.b	palette_line_size
+Normal_palette_End:
+
+Target_palette:			ds.b	palette_line_size	; This is used by the screen-fading subroutines.
+Target_palette_line2:		ds.b	palette_line_size	; While Normal_palette contains the blacked-out palette caused by the fading,
+Target_palette_line3:		ds.b	palette_line_size	; Target_palette will contain the palette the screen will ultimately fade in to.
+Target_palette_line4:		ds.b	palette_line_size
+Target_palette_End:
 
 Object_Respawn_Table:		; $FFFFFC00
 Obj_respawn_index:		ds.b	2	; respawn table indices of the next objects when moving left or right for the first player
@@ -715,5 +836,47 @@ RAM_End
 
 ; ---------------------------------------------------------------------------
 ; VDP addressses
-VDP_data_port:			equ $C00000 ; (8=r/w, 16=r/w)
-VDP_control_port:		equ $C00004 ; (8=r/w, 16=r/w)
+VDP_data_port =			$C00000 ; (8=r/w, 16=r/w)
+VDP_control_port =		$C00004 ; (8=r/w, 16=r/w)
+PSG_input =			$C00011
+
+; ---------------------------------------------------------------------------
+; Z80 addresses
+Z80_RAM =			$A00000 ; start of Z80 RAM
+Z80_RAM_End =			$A02000 ; end of non-reserved Z80 RAM
+Z80_Bus_Request =		$A11100
+Z80_Reset =			$A11200
+
+Security_Addr =			$A14000
+
+; ---------------------------------------------------------------------------
+; I/O Area 
+HW_Version =			$A10001
+HW_Port_1_Data =		$A10003
+HW_Port_2_Data =		$A10005
+HW_Expansion_Data =		$A10007
+HW_Port_1_Control =		$A10009
+HW_Port_2_Control =		$A1000B
+HW_Expansion_Control =		$A1000D
+HW_Port_1_TxData =		$A1000F
+HW_Port_1_RxData =		$A10011
+HW_Port_1_SCtrl =		$A10013
+HW_Port_2_TxData =		$A10015
+HW_Port_2_RxData =		$A10017
+HW_Port_2_SCtrl =		$A10019
+HW_Expansion_TxData =		$A1001B
+HW_Expansion_RxData =		$A1001D
+HW_Expansion_SCtrl =		$A1001F
+
+; ---------------------------------------------------------------------------
+; VRAM and tile art base addresses.
+; VRAM Reserved regions.
+VRAM_Plane_A_Name_Table                  = $C000	; Extends until $CFFF
+VRAM_Plane_B_Name_Table                  = $E000	; Extends until $EFFF
+VRAM_Plane_A_Name_Table_2P               = $A000	; Extends until $AFFF
+VRAM_Plane_B_Name_Table_2P               = $8000	; Extends until $8FFF
+VRAM_Plane_Table_Size                    = $1000	; 64 cells x 32 cells x 2 bytes per cell
+VRAM_Sprite_Attribute_Table              = $F800	; Extends until $FA7F
+VRAM_Sprite_Attribute_Table_Size         = $0280	; 640 bytes
+VRAM_Horiz_Scroll_Table                  = $FC00	; Extends until $FF7F
+VRAM_Horiz_Scroll_Table_Size             = $0380	; 224 lines * 2 bytes per entry * 2 PNTs
